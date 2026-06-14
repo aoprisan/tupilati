@@ -1,8 +1,15 @@
-import { identitate, geografie, demografie, sate } from "../data/comuna";
+import { identitate, geografie, demografie, sate, imagini } from "../data/comuna";
 
 export default function Hero() {
   return (
-    <section className="hero" id="top">
+    <section
+      className="hero"
+      id="top"
+      style={{
+        backgroundImage:
+          `linear-gradient(135deg, rgba(52,78,65,0.86), rgba(58,90,64,0.78)), url(${imagini.hero})`,
+      }}
+    >
       <div className="hero-overlay" />
       <div className="container hero-content">
         <p className="hero-eyebrow">{identitate.regiune} · {identitate.tara}</p>

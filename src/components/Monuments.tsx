@@ -13,6 +13,14 @@ export default function Monuments() {
         <div className="card-grid">
           {monumente.map((m) => (
             <article key={m.nume} className="card monument">
+              {m.imagine && (
+                <img
+                  className="card-img"
+                  src={m.imagine}
+                  alt={m.nume}
+                  loading="lazy"
+                />
+              )}
               <h3>{m.nume}</h3>
               <p className="monument-meta">
                 <span>{m.datare}</span> · <span>{m.localitate}</span>

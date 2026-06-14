@@ -1,4 +1,9 @@
-import { administratie, contact } from "../data/comuna";
+import {
+  administratie,
+  consiliuLocal,
+  personalitati,
+  contact,
+} from "../data/comuna";
 
 export default function Administration() {
   return (
@@ -13,7 +18,22 @@ export default function Administration() {
               {administratie.map((p) => (
                 <li key={p.rol}>
                   <span className="role">{p.rol}</span>
-                  <span className="name">{p.nume}</span>
+                  <span className="name">
+                    {p.nume}
+                    {p.detaliu && <small className="name-detail">{p.detaliu}</small>}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="admin-subhead">Consiliul Local (2024)</h3>
+            <ul className="council-list">
+              {consiliuLocal.map((g) => (
+                <li key={g.partid}>
+                  <span className="role">{g.partid}</span>
+                  <span className="name">
+                    {g.mandate} {g.mandate === 1 ? "mandat" : "mandate"}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -27,6 +47,25 @@ export default function Administration() {
                 Site oficial: primaria-tupilati.ro →
               </a>
             </p>
+
+            <h3 className="admin-subhead">Personalități</h3>
+            <ul className="people-list">
+              {personalitati.map((p) => (
+                <li key={p.nume}>
+                  <span className="name">
+                    {p.nume}
+                    <small className="name-detail">{p.rol}</small>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {personalitati.map((p) =>
+              p.detaliu ? (
+                <p key={p.nume} className="person-note">
+                  {p.detaliu}
+                </p>
+              ) : null
+            )}
           </div>
         </div>
       </div>

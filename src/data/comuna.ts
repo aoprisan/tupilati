@@ -1,5 +1,22 @@
 // Date despre comuna Tupilați, județul Neamț.
 // Toate informațiile sunt culese din surse publice (vezi `sources`).
+// Imaginile provin de pe Wikimedia Commons (vezi `crediteImagini`).
+
+import heroTupilati from "../assets/img/hero-tupilati.jpg";
+import imgHanulAncutei from "../assets/img/hanul-ancutei.jpg";
+import imgBiserica from "../assets/img/biserica-sfintii-voievozi.jpg";
+import imgConac from "../assets/img/conac-curte-boiereasca.jpg";
+import imgCasaCatargi from "../assets/img/casa-catargi.jpg";
+import imgHanArtizanat from "../assets/img/han-artizanat.jpg";
+
+export const imagini = {
+  hero: heroTupilati,
+  hanulAncutei: imgHanulAncutei,
+  hanArtizanat: imgHanArtizanat,
+  biserica: imgBiserica,
+  conac: imgConac,
+  casaCatargi: imgCasaCatargi,
+};
 
 export interface Sat {
   nume: string;
@@ -17,6 +34,7 @@ export interface Monument {
   datare: string;
   localitate: string;
   descriere: string;
+  imagine?: string;
 }
 
 export interface Procent {
@@ -27,6 +45,19 @@ export interface Procent {
 export interface Persoana {
   rol: string;
   nume: string;
+  detaliu?: string;
+}
+
+export interface GrupConsiliu {
+  partid: string;
+  mandate: number;
+}
+
+export interface CreditImagine {
+  subiect: string;
+  autor: string;
+  licenta: string;
+  url: string;
 }
 
 export interface Sursa {
@@ -92,7 +123,10 @@ export const recensaminte: Recensamant[] = [
 export const demografie = {
   populatieActuala: 1991, // recensământ 2021
   densitateLocKm2: 61.9,
-  etnii: [{ eticheta: "Români", procent: 91.21 }] as Procent[],
+  etnii: [
+    { eticheta: "Români", procent: 91.21 },
+    { eticheta: "Alte etnii / nedeclarate", procent: 8.79 },
+  ] as Procent[],
   religie: [
     { eticheta: "Ortodocși", procent: 81.01 },
     { eticheta: "Romano-catolici", procent: 9.39 },
@@ -111,6 +145,10 @@ export const istorie: EvenimentIstoric[] = [
     text:
       "Comuna făcea parte din plasa Moldova a județului Roman și era formată doar din satul de " +
       "reședință, cu 1.144 de locuitori. Avea o școală mixtă, două biserici ortodoxe și o biserică catolică.",
+  },
+  {
+    perioada: "1931",
+    text: "Comunei i-a fost atașat satul Mitești.",
   },
   {
     perioada: "1950",
@@ -148,14 +186,16 @@ export const monumente: Monument[] = [
     descriere:
       "Biserică ortodoxă din satul de reședință, cu adăugiri de la începutul secolului al XIX-lea, " +
       "inclusă pe lista monumentelor istorice din județul Neamț.",
+    imagine: imgBiserica,
   },
   {
-    nume: "Ansamblul fostei curți boierești",
+    nume: "Ansamblul fostei curți boierești (Conacul Catargi)",
     datare: "sec. XVII–XIX",
     localitate: "Tupilați",
     descriere:
-      "Ansamblu de curte boierească din satul Tupilați, monument istoric reprezentativ pentru " +
-      "trecutul comunei.",
+      "Ansamblu de curte boierească din satul Tupilați, legat de familia Catargi, monument istoric " +
+      "reprezentativ pentru trecutul comunei.",
+    imagine: imgConac,
   },
   {
     nume: "Hanul Ancuței",
@@ -164,6 +204,7 @@ export const monumente: Monument[] = [
     descriere:
       "Han de popas pe vechiul drum al Moldovei, monument istoric și reper cultural prin legătura " +
       "cu opera lui Mihail Sadoveanu.",
+    imagine: imgHanulAncutei,
   },
 ];
 
@@ -177,9 +218,27 @@ export const economie = {
 };
 
 export const administratie: Persoana[] = [
-  { rol: "Primar", nume: "Petru Gherghel" },
+  { rol: "Primar", nume: "Petru Gherghel", detaliu: "PSD · în funcție din 2000" },
   { rol: "Viceprimar", nume: "Costel Plugaru" },
   { rol: "Secretar general", nume: "Constantin Bostan" },
+];
+
+// Componența Consiliului Local (11 mandate) după alegerile locale din 2024.
+export const consiliuLocal: GrupConsiliu[] = [
+  { partid: "PSD", mandate: 6 },
+  { partid: "PNL", mandate: 2 },
+  { partid: "PPU-SL", mandate: 1 },
+  { partid: "USR", mandate: 1 },
+  { partid: "PRM", mandate: 1 },
+];
+
+// Personalități legate de comună.
+export const personalitati: Persoana[] = [
+  {
+    rol: "1789–1866",
+    nume: "Ștefan Catargiu",
+    detaliu: "Mare logofăt și caimacam al Moldovei; familia Catargi este legată de curtea boierească din Tupilați.",
+  },
 ];
 
 export const contact = {
@@ -204,5 +263,45 @@ export const sources: Sursa[] = [
   {
     titlu: "Primăria Tupilați — site oficial",
     url: "https://www.primaria-tupilati.ro",
+  },
+];
+
+// Credite foto — imagini de pe Wikimedia Commons, folosite conform licențelor lor.
+export const crediteImagini: CreditImagine[] = [
+  {
+    subiect: "Vedere din Tupilați",
+    autor: "Asybaris01",
+    licenta: "Domeniu public",
+    url: "https://commons.wikimedia.org/wiki/File:Tupilati_judetul_Neamt.jpg",
+  },
+  {
+    subiect: "Hanul Ancuței",
+    autor: "autor necunoscut",
+    licenta: "Domeniu public",
+    url: "https://commons.wikimedia.org/wiki/File:Hanu%27_Ancu%C5%A3ei.jpg",
+  },
+  {
+    subiect: "Magazin de artizanat la Hanul Ancuței",
+    autor: "Bogdan29roman",
+    licenta: "CC0",
+    url: "https://commons.wikimedia.org/wiki/File:Magazin_artizanat_han_ancu%C5%A3ei.jpg",
+  },
+  {
+    subiect: "Biserica „Sfinții Voievozi”, Tupilați",
+    autor: "Cezar Suceveanu",
+    licenta: "CC BY 3.0",
+    url: "https://commons.wikimedia.org/wiki/File:Biserica_din_Tupilati4.jpg",
+  },
+  {
+    subiect: "Conacul din Tupilați",
+    autor: "Cezarika1",
+    licenta: "CC BY-SA 3.0",
+    url: "https://commons.wikimedia.org/wiki/File:Conacul_din_Tupila%C5%A3i.jpg",
+  },
+  {
+    subiect: "Casa Catargi, Tupilați",
+    autor: "Leonte1972",
+    licenta: "CC BY-SA 3.0 RO",
+    url: "https://commons.wikimedia.org/wiki/File:Casa_Catargi_sat_Tupila%C5%A3i,_jude%C5%A3ul_Neam%C5%A3.JPG",
   },
 ];

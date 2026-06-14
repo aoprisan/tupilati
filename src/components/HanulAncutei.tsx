@@ -1,4 +1,4 @@
-import { hanulAncutei } from "../data/comuna";
+import { hanulAncutei, imagini } from "../data/comuna";
 
 export default function HanulAncutei() {
   return (
@@ -7,6 +7,11 @@ export default function HanulAncutei() {
         <span className="feature-kicker">Atracția principală</span>
         <h2 className="section-title">{hanulAncutei.titlu}</h2>
         <p className="section-lead">{hanulAncutei.rezumat}</p>
+
+        <figure className="feature-figure">
+          <img src={imagini.hanulAncutei} alt="Hanul Ancuței" loading="lazy" />
+          <figcaption>Hanul Ancuței, pe vechiul drum al Moldovei (E85).</figcaption>
+        </figure>
 
         <div className="prose">
           {hanulAncutei.detalii.map((p, i) => (

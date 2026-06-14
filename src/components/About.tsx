@@ -1,4 +1,4 @@
-import { identitate, geografie } from "../data/comuna";
+import { identitate, geografie, imagini } from "../data/comuna";
 
 export default function About() {
   return (
@@ -6,6 +6,17 @@ export default function About() {
       <div className="container">
         <h2 className="section-title">Despre comună</h2>
         <p className="section-lead">{identitate.descriere}</p>
+
+        <figure className="about-figure">
+          <img
+            src={imagini.casaCatargi}
+            alt="Casa Catargi din satul Tupilați"
+            loading="lazy"
+          />
+          <figcaption>
+            Casa Catargi din Tupilați — mărturie a trecutului boieresc al comunei.
+          </figcaption>
+        </figure>
 
         <dl className="fact-grid">
           <div className="fact">

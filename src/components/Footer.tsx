@@ -1,4 +1,4 @@
-import { sources, identitate } from "../data/comuna";
+import { sources, identitate, crediteImagini } from "../data/comuna";
 
 export default function Footer() {
   return (
@@ -19,6 +19,18 @@ export default function Footer() {
                 <a href={s.url} target="_blank" rel="noopener noreferrer">
                   {s.titlu}
                 </a>
+              </li>
+            ))}
+          </ul>
+
+          <h4 className="credits-head">Credite foto (Wikimedia Commons)</h4>
+          <ul className="footer-credits">
+            {crediteImagini.map((c) => (
+              <li key={c.url}>
+                <a href={c.url} target="_blank" rel="noopener noreferrer">
+                  {c.subiect}
+                </a>{" "}
+                — {c.autor}, {c.licenta}
               </li>
             ))}
           </ul>
