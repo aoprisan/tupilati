@@ -1,21 +1,45 @@
+/* ============================================================================
+   Cronica Tupilaților — a printed Moldovan village chronicle.
+   Ink on aged paper · Fraunces / Newsreader / Space Mono · oxblood rubrics.
+   ========================================================================== */
+
 :root {
-  --green-900: #344e41;
-  --green-700: #3a5a40;
-  --green-500: #588157;
-  --green-300: #a3b18a;
-  --cream: #fefae0;
-  --sand: #f4f1de;
-  --ink: #2b2b26;
-  --muted: #6b6b5f;
-  --accent: #bc6c25;
-  --accent-soft: #dda15e;
-  --white: #ffffff;
-  --shadow: 0 8px 24px rgba(52, 78, 65, 0.12);
-  --radius: 14px;
-  --maxw: 1080px;
+  /* paper & ink */
+  --paper: #f3ead9;
+  --paper-2: #ece0c9;
+  --paper-3: #e4d6ba;
+  --ink: #221c15;
+  --ink-2: #4f463a;
+  --ink-3: #7c715f;
+  --rule: #c9b894;
+  --rule-soft: #d9ccb0;
+
+  /* accents */
+  --oxblood: #8c2a1c;
+  --oxblood-2: #6e2014;
+  --gold: #a6803c;
+  --gold-2: #c69a4d;
+
+  /* dark plate (Hanul Ancuței + footer) */
+  --plate: #1c1610;
+  --plate-2: #251d15;
+  --plate-paper: #ece0c9;
+  --plate-faint: #b6a585;
+
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --body: "Newsreader", Georgia, serif;
+  --mono: "Space Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --maxw: 1180px;
+  --measure: 68ch;
+
+  /* faint paper grain, reused on light + dark surfaces */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
@@ -24,113 +48,185 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 78px;
+  scroll-padding-top: 92px;
 }
 
 body {
   margin: 0;
-  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+  font-family: var(--body);
+  font-optical-sizing: auto;
+  font-size: 19px;
+  line-height: 1.62;
   color: var(--ink);
-  background: var(--cream);
-  line-height: 1.65;
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(120% 90% at 50% -10%, var(--paper) 40%, var(--paper-2) 100%);
+  position: relative;
+}
+
+/* global paper grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background-image: var(--grain);
+  background-size: 180px 180px;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
 }
 
 h1,
 h2,
 h3,
-h4,
-.brand-text,
-.quote {
-  font-family: Georgia, "Times New Roman", serif;
+h4 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-optical-sizing: auto;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+p {
+  margin: 0 0 1.1em;
 }
 
 a {
-  color: var(--accent);
+  color: var(--oxblood);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
 img {
   max-width: 100%;
+  display: block;
+}
+
+::selection {
+  background: var(--oxblood);
+  color: var(--paper);
 }
 
 .container {
   width: 100%;
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 32px;
 }
 
-/* ---------- Header / nav ---------- */
-.site-header {
+/* shared label / kicker — letterpressed mono small-caps */
+.kicker {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--oxblood);
+  margin: 0;
+}
+
+/* ---------- reveal-on-scroll (progressive enhancement) ---------- */
+html.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: opacity, transform;
+}
+html.reveal-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================================
+   Masthead
+   ========================================================================== */
+.masthead {
   position: sticky;
   top: 0;
-  z-index: 50;
-  background: rgba(58, 90, 64, 0.97);
-  backdrop-filter: blur(6px);
-  color: var(--cream);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+  z-index: 100;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: saturate(1.1) blur(8px);
+  border-bottom: 1px solid var(--rule);
 }
 
-.header-inner {
+.masthead-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  min-height: 64px;
+  gap: 20px;
+  min-height: 72px;
 }
 
 .brand {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 12px;
-  color: var(--cream);
+  color: var(--ink);
   text-decoration: none;
 }
 
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: var(--accent-soft);
-  color: var(--green-900);
-  font-weight: 700;
-  font-family: Georgia, serif;
-  font-size: 1.2rem;
+.brand-name {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: -0.015em;
 }
 
-.brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  font-size: 1.15rem;
-  font-weight: 700;
+.brand-name em {
+  font-style: italic;
+  color: var(--oxblood);
 }
 
-.brand-text small {
-  font-family: "Segoe UI", system-ui, sans-serif;
-  font-weight: 400;
-  font-size: 0.72rem;
-  opacity: 0.85;
+.brand-sub {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
 
 .site-nav {
   display: flex;
-  gap: 6px;
+  align-items: center;
+  gap: 4px;
   flex-wrap: wrap;
 }
 
 .site-nav a {
-  color: var(--cream);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-2);
   text-decoration: none;
-  font-size: 0.92rem;
-  padding: 8px 10px;
-  border-radius: 8px;
-  transition: background 0.18s ease;
+  padding: 8px 11px;
+  border-radius: 2px;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.site-nav a::after {
+  content: "";
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  bottom: 4px;
+  height: 1px;
+  background: var(--oxblood);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
 }
 
 .site-nav a:hover {
-  background: rgba(255, 255, 255, 0.14);
+  color: var(--oxblood);
+}
+.site-nav a:hover::after {
+  transform: scaleX(1);
 }
 
 .nav-toggle {
@@ -138,386 +234,600 @@ img {
   flex-direction: column;
   gap: 5px;
   background: transparent;
-  border: 0;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
   cursor: pointer;
-  padding: 8px;
+  padding: 9px;
 }
 
 .nav-toggle span {
-  width: 24px;
-  height: 2px;
-  background: var(--cream);
-  border-radius: 2px;
+  width: 22px;
+  height: 1.5px;
+  background: var(--ink);
 }
 
-/* ---------- Hero ---------- */
-.hero {
+/* ============================================================================
+   Frontispiece (hero)
+   ========================================================================== */
+.frontispiece {
   position: relative;
-  color: var(--cream);
-  background-color: var(--green-700);
-  background-image:
-    linear-gradient(135deg, rgba(52, 78, 65, 0.92), rgba(88, 129, 87, 0.82)),
-    radial-gradient(circle at 80% 20%, var(--accent-soft), transparent 45%);
-  background-size: cover;
-  background-position: center;
+  padding: clamp(48px, 8vw, 96px) 0 clamp(40px, 6vw, 72px);
+  border-bottom: 1px solid var(--rule);
   overflow: hidden;
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 22px 22px;
-  opacity: 0.5;
+.fp-grid {
+  display: grid;
+  grid-template-columns: 1fr minmax(220px, 300px);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: end;
 }
 
-.hero-content {
-  position: relative;
-  padding: 84px 20px 92px;
-  text-align: center;
+.fp-place {
+  margin: 0 0 22px;
 }
 
-.hero-eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 0.78rem;
-  margin: 0 0 12px;
-  opacity: 0.9;
-}
-
-.hero h1 {
-  font-size: clamp(2.4rem, 6vw, 4rem);
-  margin: 0 0 14px;
-  line-height: 1.05;
-}
-
-.hero-tagline {
-  max-width: 640px;
-  margin: 0 auto 36px;
-  font-size: clamp(1.05rem, 2.4vw, 1.3rem);
-  opacity: 0.95;
-}
-
-.hero-stats {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 14px;
-  padding: 0;
-  margin: 0 0 36px;
-}
-
-.hero-stats li {
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 12px;
-  padding: 14px 22px;
-  min-width: 120px;
-  display: flex;
-  flex-direction: column;
-}
-
-.hero-stats strong {
-  font-size: 1.5rem;
-  font-family: Georgia, serif;
-}
-
-.hero-stats span {
-  font-size: 0.8rem;
-  opacity: 0.88;
-}
-
-.btn {
-  display: inline-block;
-  background: var(--accent);
-  color: var(--cream);
-  text-decoration: none;
-  padding: 13px 26px;
-  border-radius: 999px;
+.fp-title {
+  font-size: clamp(3.2rem, 11vw, 8rem);
   font-weight: 600;
-  box-shadow: var(--shadow);
-  transition: transform 0.15s ease, background 0.15s ease;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  margin: 0 0 6px;
 }
 
-.btn:hover {
-  background: var(--accent-soft);
-  color: var(--green-900);
+.fp-title .small {
+  display: block;
+  font-size: 0.32em;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  color: var(--ink-2);
+  margin-bottom: 0.18em;
+}
+
+.fp-rule {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 26px 0;
+  max-width: 560px;
+}
+.fp-rule::before,
+.fp-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+.fp-rule span {
+  width: 7px;
+  height: 7px;
+  background: var(--oxblood);
+  transform: rotate(45deg);
+}
+
+.fp-tagline {
+  font-size: clamp(1.2rem, 2.4vw, 1.65rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink-2);
+  max-width: 30ch;
+  margin: 0 0 30px;
+}
+
+.fp-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+  padding: 14px 22px;
+  border-radius: 2px;
+  background: transparent;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+.fp-cta:hover {
+  background: var(--ink);
+  color: var(--paper);
   transform: translateY(-2px);
 }
+.fp-cta .arrow {
+  transition: transform 0.25s ease;
+}
+.fp-cta:hover .arrow {
+  transform: translateX(4px);
+}
 
-/* ---------- Sections ---------- */
+/* the survey-marker ledger in the right column */
+.fp-ledger {
+  border-top: 2px solid var(--ink);
+  padding-top: 4px;
+}
+.fp-ledger dl {
+  margin: 0;
+}
+.fp-ledger .row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.fp-ledger dt {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.fp-ledger dd {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.fp-ledger dd small {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+}
+
+/* hero plate */
+.fp-plate {
+  margin-top: clamp(40px, 6vw, 72px);
+}
+
+/* ---------- matted plate (shared image treatment) ---------- */
+.plate {
+  margin: 0;
+  background: var(--paper-2);
+  padding: 10px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+.plate img {
+  width: 100%;
+  object-fit: cover;
+  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  filter: saturate(0.92) contrast(1.02);
+}
+.plate.tall img {
+  aspect-ratio: 4 / 5;
+}
+.plate.wide img {
+  aspect-ratio: 16 / 7;
+}
+figure.plate figcaption,
+.plate-caption {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--rule-soft);
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  line-height: 1.5;
+  display: flex;
+  gap: 8px;
+}
+.plate-caption::before {
+  content: "▲";
+  color: var(--oxblood);
+  font-size: 0.6rem;
+}
+
+/* ============================================================================
+   Chapter sections
+   ========================================================================== */
+main {
+  counter-reset: chapter;
+}
+
 .section {
-  padding: 72px 0;
+  counter-increment: chapter;
+  padding: clamp(56px, 8vw, 104px) 0;
+  border-bottom: 1px solid var(--rule);
 }
 
 .section-alt {
-  background: var(--sand);
+  background: var(--paper-2);
+}
+
+/* chapter heading: roman numeral + title + lead */
+.chapter {
+  margin-bottom: clamp(32px, 5vw, 56px);
+}
+
+.chapter-index {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--oxblood);
+  margin-bottom: 18px;
+}
+.chapter-index::before {
+  content: "Cap. " counter(chapter, upper-roman);
+}
+.chapter-index::after {
+  content: "";
+  width: 56px;
+  height: 1px;
+  background: var(--rule);
 }
 
 .section-title {
-  font-size: clamp(1.7rem, 4vw, 2.3rem);
-  margin: 0 0 18px;
-  color: var(--green-900);
-  position: relative;
-  padding-bottom: 12px;
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  max-width: 18ch;
 }
-
-.section-title::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 64px;
-  height: 4px;
-  border-radius: 4px;
-  background: var(--accent-soft);
+.section-title em {
+  font-style: italic;
+  color: var(--oxblood);
 }
 
 .section-lead {
-  max-width: 760px;
-  font-size: 1.08rem;
-  color: var(--muted);
-  margin: 0 0 32px;
+  font-size: 1.2rem;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: var(--measure);
+  margin: 22px 0 0;
 }
 
+.prose {
+  max-width: var(--measure);
+}
 .prose p {
-  max-width: 760px;
-  margin: 0 0 16px;
+  margin: 0 0 1.2em;
+}
+.prose p:last-child {
+  margin-bottom: 0;
 }
 
-/* ---------- Fact grid ---------- */
-.fact-grid {
+/* drop cap for the opening of a chapter */
+.dropcap::first-letter {
+  font-family: var(--serif);
+  font-weight: 600;
+  float: left;
+  font-size: 3.6em;
+  line-height: 0.74;
+  padding: 0.07em 0.1em 0 0;
+  margin-right: 0.04em;
+  color: var(--oxblood);
+}
+
+/* ============================================================================
+   Cap. I — Despre comună
+   ========================================================================== */
+.about-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
-  margin: 0;
+  grid-template-columns: 1.25fr 1fr;
+  gap: clamp(28px, 5vw, 56px);
+  align-items: start;
 }
 
-.fact {
-  background: var(--white);
-  border: 1px solid rgba(52, 78, 65, 0.1);
-  border-radius: var(--radius);
-  padding: 16px 18px;
-  box-shadow: var(--shadow);
+/* ledger of facts */
+.ledger {
+  margin: clamp(32px, 5vw, 48px) 0 0;
+  border-top: 2px solid var(--ink);
+  columns: 2;
+  column-gap: 48px;
 }
-
-.fact dt {
-  font-size: 0.78rem;
+.ledger .row {
+  break-inside: avoid;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.ledger dt {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--green-500);
-  margin-bottom: 4px;
+  color: var(--ink-3);
+  white-space: nowrap;
 }
-
-.fact dd {
+.ledger dd {
   margin: 0;
   font-weight: 600;
-  font-size: 1.05rem;
+  text-align: right;
 }
 
-/* ---------- Cards ---------- */
-.card-grid {
+/* ============================================================================
+   Cap. II — Satele comunei (gazetteer list)
+   ========================================================================== */
+.gazetteer {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+}
+.gaz-item {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: 96px 1fr;
+  gap: clamp(20px, 4vw, 48px);
+  padding: clamp(26px, 4vw, 38px) 0;
+  border-bottom: 1px solid var(--rule-soft);
+  align-items: baseline;
 }
-
-.card {
-  background: var(--white);
-  border-radius: var(--radius);
-  padding: 22px;
-  box-shadow: var(--shadow);
-  border-top: 4px solid var(--green-500);
+.gaz-num {
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  color: var(--oxblood);
+  letter-spacing: 0.05em;
+  padding-top: 0.4em;
 }
-
-.card h3 {
-  margin: 0 0 10px;
+.gaz-name {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--green-900);
+  gap: 14px;
+  flex-wrap: wrap;
 }
-
-.card p {
+.gaz-desc {
   margin: 0;
-  color: var(--muted);
+  color: var(--ink-2);
+  max-width: 62ch;
 }
 
-.card-img {
-  display: block;
-  width: calc(100% + 44px);
-  margin: -22px -22px 16px;
-  height: 190px;
-  object-fit: cover;
-  border-radius: var(--radius) var(--radius) 0 0;
-}
-
-/* ---------- Figures ---------- */
-figure {
-  margin: 0;
-}
-
-.about-figure,
-.feature-figure {
-  margin: 0 0 28px;
-}
-
-.about-figure img,
-.feature-figure img {
-  display: block;
-  width: 100%;
-  max-height: 460px;
-  object-fit: cover;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.about-figure figcaption,
-.feature-figure figcaption {
-  margin-top: 10px;
-  font-size: 0.88rem;
-  color: var(--muted);
-}
-
-.feature-figure figcaption {
-  color: rgba(254, 250, 224, 0.85);
-}
-
-.badge {
-  font-family: "Segoe UI", system-ui, sans-serif;
-  font-size: 0.68rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: var(--accent-soft);
-  color: var(--green-900);
-  padding: 3px 8px;
-  border-radius: 999px;
-}
-
-.monument {
-  border-top-color: var(--accent);
-}
-
-.monument-meta {
-  color: var(--accent) !important;
-  font-weight: 600;
-  font-size: 0.88rem;
-  margin: 0 0 8px !important;
-}
-
-/* ---------- Timeline ---------- */
-.timeline {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  max-width: 760px;
-}
-
-.timeline-item {
-  position: relative;
-  padding: 0 0 28px 34px;
-  border-left: 2px solid var(--green-300);
-}
-
-.timeline-item:last-child {
-  border-left-color: transparent;
-  padding-bottom: 0;
-}
-
-.timeline-marker {
-  position: absolute;
-  left: -9px;
-  top: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 3px solid var(--cream);
-}
-
-.timeline-period {
-  display: inline-block;
+/* rubric tag */
+.rubric {
+  font-family: var(--mono);
+  font-size: 0.6rem;
   font-weight: 700;
-  color: var(--green-900);
-  margin-bottom: 4px;
-}
-
-.timeline-body p {
-  margin: 0;
-  color: var(--muted);
-}
-
-/* ---------- Feature (Hanul Ancuței) ---------- */
-.section-feature {
-  background:
-    linear-gradient(160deg, rgba(52, 78, 65, 0.95), rgba(58, 90, 64, 0.92)),
-    var(--green-700);
-  color: var(--cream);
-}
-
-.section-feature .section-title {
-  color: var(--cream);
-}
-
-.section-feature .section-lead {
-  color: rgba(254, 250, 224, 0.92);
-}
-
-.feature-kicker {
-  display: inline-block;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.74rem;
-  background: var(--accent);
-  color: var(--cream);
-  padding: 5px 12px;
-  border-radius: 999px;
-  margin-bottom: 14px;
+  color: var(--oxblood);
+  border: 1px solid var(--oxblood);
+  border-radius: 2px;
+  padding: 4px 9px;
+  white-space: nowrap;
 }
 
-.quote {
-  margin: 32px 0 0;
-  padding: 20px 26px;
-  border-left: 4px solid var(--accent-soft);
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  font-size: 1.18rem;
+/* ============================================================================
+   Cap. III — Istorie (annals)
+   ========================================================================== */
+.annals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+}
+.annal {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: clamp(20px, 4vw, 48px);
+  padding: clamp(24px, 4vw, 36px) 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.annal-year {
+  font-family: var(--serif);
   font-style: italic;
-  max-width: 760px;
+  font-weight: 500;
+  font-size: 1.35rem;
+  color: var(--oxblood);
+  line-height: 1.2;
+}
+.annal-text {
+  margin: 0;
+  color: var(--ink-2);
+  max-width: 62ch;
 }
 
-.quote cite {
+/* ============================================================================
+   Cap. IV — Hanul Ancuței (dark book plate)
+   ========================================================================== */
+.plate-section {
+  position: relative;
+  background: var(--plate);
+  color: var(--plate-paper);
+  border-bottom: none;
+  overflow: hidden;
+}
+.plate-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  background-size: 180px 180px;
+  opacity: 0.07;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.plate-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    120% 90% at 50% 18%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.45) 100%
+  );
+  pointer-events: none;
+}
+.plate-section .container {
+  position: relative;
+  z-index: 1;
+}
+.plate-section .chapter-index,
+.plate-section .annal-year,
+.plate-section .kicker {
+  color: var(--gold-2);
+}
+.plate-section .chapter-index::after {
+  background: rgba(255, 255, 255, 0.18);
+}
+.plate-section .section-title em {
+  color: var(--gold-2);
+}
+
+.han-head {
+  text-align: center;
+  max-width: 30ch;
+  margin: 0 auto clamp(36px, 6vw, 56px);
+}
+.han-head .chapter-index {
+  justify-content: center;
+}
+.han-head .section-title {
+  max-width: none;
+  font-size: clamp(2.6rem, 7vw, 5rem);
+}
+.han-head .section-lead {
+  color: var(--plate-faint);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.han-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+}
+.han-prose p {
+  color: var(--plate-paper);
+  margin: 0 0 1.2em;
+}
+.han-prose p:last-child {
+  margin-bottom: 0;
+}
+.plate-section .plate {
+  background: var(--plate-2);
+  border-color: rgba(198, 154, 77, 0.4);
+}
+.plate-section .plate img {
+  border-color: rgba(0, 0, 0, 0.5);
+  filter: saturate(0.9) contrast(1.05) brightness(0.96);
+}
+.plate-section figcaption {
+  border-top-color: rgba(255, 255, 255, 0.14);
+  color: var(--plate-faint);
+}
+
+/* epigraph */
+.epigraph {
+  margin: clamp(48px, 7vw, 80px) auto 0;
+  max-width: 24ch;
+  text-align: center;
+  position: relative;
+}
+.epigraph::before {
+  content: "\201E";
   display: block;
-  margin-top: 12px;
-  font-size: 0.9rem;
+  font-family: var(--serif);
+  font-size: 5rem;
+  line-height: 0.4;
+  color: var(--oxblood);
+  margin-bottom: 0.2em;
+}
+.epigraph q {
+  quotes: none;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 4vw, 2.4rem);
+  line-height: 1.28;
+  color: var(--plate-paper);
+}
+.epigraph cite {
+  display: block;
+  margin-top: 22px;
+  font-family: var(--mono);
   font-style: normal;
-  opacity: 0.85;
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-2);
 }
 
-/* ---------- Demographics ---------- */
-.chart-card {
-  background: var(--white);
-  border-radius: var(--radius);
-  padding: 24px;
-  box-shadow: var(--shadow);
-  margin-bottom: 32px;
+/* ============================================================================
+   Cap. V — Monumente
+   ========================================================================== */
+.monument-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(24px, 3vw, 40px);
+}
+.monument {
+  display: flex;
+  flex-direction: column;
+}
+.monument .plate {
+  margin-bottom: 18px;
+}
+.monument .plate img {
+  aspect-ratio: 5 / 4;
+}
+.monument-meta {
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--oxblood);
+  margin: 0 0 8px;
+}
+.monument h3 {
+  font-size: 1.45rem;
+  margin: 0 0 10px;
+  letter-spacing: -0.015em;
+}
+.monument p:last-child {
+  color: var(--ink-2);
+  margin: 0;
 }
 
-.chart-card h3 {
-  margin: 0 0 20px;
-  color: var(--green-900);
+/* ============================================================================
+   Cap. VI — Demografie
+   ========================================================================== */
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: clamp(36px, 5vw, 64px);
+  align-items: start;
+}
+.panel-title {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--ink);
+  margin: 0 0 24px;
 }
 
+/* census bar chart — austere ink ledger */
 .barchart {
   display: flex;
   align-items: flex-end;
-  gap: 24px;
-  height: 240px;
-  padding-top: 10px;
+  gap: clamp(16px, 4vw, 40px);
+  height: 260px;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 0;
 }
-
 .bar-col {
   flex: 1;
   display: flex;
@@ -525,341 +835,439 @@ figure {
   align-items: center;
   justify-content: flex-end;
   height: 100%;
-  gap: 6px;
+  gap: 10px;
 }
-
+.bar-value {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink);
+}
 .bar {
   width: 100%;
-  max-width: 80px;
-  background: linear-gradient(180deg, var(--green-500), var(--green-700));
-  border-radius: 8px 8px 0 0;
+  max-width: 64px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--oxblood),
+      var(--oxblood) 6px,
+      var(--oxblood-2) 6px,
+      var(--oxblood-2) 12px
+    );
   min-height: 4px;
-  transition: height 0.4s ease;
+  position: relative;
 }
-
-.bar-value {
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--green-900);
+.bar-col:last-child .bar {
+  background: var(--ink);
 }
-
 .bar-label {
-  font-size: 0.85rem;
-  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+  padding-top: 6px;
 }
 
-.proc-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+.demo-stat {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  margin: 18px 0 0;
 }
 
-.proc-block {
-  background: var(--white);
-  border-radius: var(--radius);
-  padding: 22px;
-  box-shadow: var(--shadow);
+/* proportion rows */
+.proc-block + .proc-block {
+  margin-top: 36px;
 }
-
-.proc-block h3 {
-  margin: 0 0 16px;
-  color: var(--green-900);
-}
-
 .proc-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-
 .proc-list li {
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
-
+.proc-list li:last-child {
+  margin-bottom: 0;
+}
 .proc-head {
   display: flex;
   justify-content: space-between;
-  font-size: 0.92rem;
-  margin-bottom: 5px;
+  align-items: baseline;
+  margin-bottom: 7px;
 }
-
+.proc-head span:first-child {
+  font-size: 0.98rem;
+}
 .proc-val {
+  font-family: var(--mono);
   font-weight: 700;
-  color: var(--green-700);
+  font-size: 0.8rem;
+  color: var(--oxblood);
 }
-
 .proc-track {
-  height: 9px;
-  background: var(--sand);
-  border-radius: 999px;
+  height: 7px;
+  background: var(--paper-3);
+  border: 1px solid var(--rule);
+  border-radius: 1px;
   overflow: hidden;
 }
-
 .proc-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--green-500), var(--accent-soft));
-  border-radius: 999px;
+  background: var(--oxblood);
 }
 
-/* ---------- Lists ---------- */
-.bullet-list {
-  max-width: 760px;
-  padding-left: 20px;
-  color: var(--muted);
-}
-
-.bullet-list li {
-  margin-bottom: 10px;
-}
-
-/* ---------- Map ---------- */
-.map-frame {
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  border: 1px solid rgba(52, 78, 65, 0.15);
-  aspect-ratio: 16 / 9;
-}
-
-.map-frame iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-}
-
-.map-link {
-  margin-top: 14px;
-  font-weight: 600;
-}
-
-/* ---------- Administration ---------- */
-.admin-grid {
+/* ============================================================================
+   Cap. VII — Economie
+   ========================================================================== */
+.economy-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
 }
-
-.admin-people,
-.admin-contact {
-  background: var(--white);
-  border-radius: var(--radius);
-  padding: 24px;
-  box-shadow: var(--shadow);
+.feature-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3.4vw, 2.3rem);
+  line-height: 1.3;
+  color: var(--ink);
+  margin: 0;
+  padding-left: 24px;
+  border-left: 3px solid var(--oxblood);
 }
-
-.admin-people h3,
-.admin-contact h3 {
-  margin: 0 0 16px;
-  color: var(--green-900);
-}
-
-.people-list {
+.detail-list {
   list-style: none;
   margin: 0;
   padding: 0;
+  border-top: 2px solid var(--ink);
+}
+.detail-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  color: var(--ink-2);
+}
+.detail-list li::before {
+  content: "§";
+  font-family: var(--serif);
+  color: var(--oxblood);
+  font-size: 1.2rem;
 }
 
-.people-list li {
+/* ============================================================================
+   Cap. VIII — Hartă
+   ========================================================================== */
+.map-frame {
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  padding: 10px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.map-frame iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+  display: block;
+  filter: saturate(0.85) sepia(0.12);
+}
+.map-link {
+  margin-top: 16px;
+}
+.map-link a {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ============================================================================
+   Cap. IX — Administrație
+   ========================================================================== */
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+.record-list {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+}
+.record-list li {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--sand);
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule-soft);
 }
-
-.people-list li:last-child {
-  border-bottom: 0;
+.record-list li:first-child {
+  border-top: 1px solid var(--rule-soft);
 }
-
-.people-list .role {
-  color: var(--muted);
+.record-list .role {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
 }
-
-.people-list .name {
+.record-list .value {
   font-weight: 600;
+  text-align: right;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
 }
-
-.name-detail {
+.record-list .value small {
+  font-family: var(--mono);
   font-weight: 400;
-  font-size: 0.78rem;
-  color: var(--muted);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-3);
+  margin-top: 3px;
 }
 
 .admin-subhead {
-  margin-top: 26px !important;
-  font-size: 1.05rem;
+  margin: 38px 0 0;
 }
 
-.council-list {
+.contact-line {
+  margin: 0 0 0.6em;
+  color: var(--ink-2);
+}
+.contact-link a {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+}
+.person-note {
+  margin: 14px 0 0;
+  color: var(--ink-2);
+  font-style: italic;
+}
+
+/* ============================================================================
+   Colophon (footer)
+   ========================================================================== */
+.colophon {
+  position: relative;
+  background: var(--plate);
+  color: var(--plate-paper);
+  overflow: hidden;
+}
+.colophon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain);
+  background-size: 180px 180px;
+  opacity: 0.06;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.colophon .container {
+  position: relative;
+  z-index: 1;
+}
+.colophon-top {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: clamp(28px, 4vw, 56px);
+  padding: clamp(48px, 7vw, 80px) 0 clamp(32px, 4vw, 48px);
+}
+.colophon-name {
+  font-family: var(--serif);
+  font-size: 2.2rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+.colophon-name em {
+  font-style: italic;
+  color: var(--gold-2);
+}
+.colophon-note {
+  margin: 0;
+  color: var(--plate-faint);
+  max-width: 38ch;
+}
+.colophon h4 {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-2);
+  margin: 0 0 16px;
+}
+.colophon ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
+.colophon-sources li {
+  margin-bottom: 10px;
+}
+.colophon-sources a {
+  color: var(--plate-paper);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(198, 154, 77, 0.4);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.colophon-sources a:hover {
+  color: var(--gold-2);
+  border-color: var(--gold-2);
+}
+.colophon-credits {
+  font-size: 0.84rem;
+  color: var(--plate-faint);
+  line-height: 1.5;
+}
+.colophon-credits li {
+  margin-bottom: 9px;
+}
+.colophon-credits a {
+  color: var(--plate-paper);
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.3);
+}
+.colophon-credits a:hover {
+  color: var(--gold-2);
+}
 
-.council-list li {
+.colophon-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 22px 0 32px;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--plate-faint);
   display: flex;
   justify-content: space-between;
-  gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--sand);
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-.council-list li:last-child {
-  border-bottom: 0;
+/* ============================================================================
+   Frontispiece load animation
+   ========================================================================== */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.fp-step {
+  opacity: 0;
+  animation: rise 0.95s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
 }
 
-.council-list .role {
-  font-weight: 600;
-  color: var(--green-700);
+/* ============================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 940px) {
+  .fp-grid,
+  .about-grid,
+  .han-body,
+  .demo-grid,
+  .economy-grid,
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+  .monument-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ledger {
+    columns: 1;
+  }
+  .fp-ledger {
+    border-top-width: 1px;
+  }
+  .colophon-top {
+    grid-template-columns: 1fr 1fr;
+  }
+  .colophon-brand {
+    grid-column: 1 / -1;
+  }
 }
 
-.council-list .name {
-  color: var(--muted);
-  font-weight: 400;
-}
-
-.person-note {
-  margin: 12px 0 0;
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-/* ---------- Footer ---------- */
-.site-footer {
-  background: var(--green-900);
-  color: var(--cream);
-  margin-top: 0;
-}
-
-.footer-inner {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 32px;
-  padding-top: 48px;
-  padding-bottom: 32px;
-}
-
-.footer-brand {
-  font-family: Georgia, serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin: 0 0 8px;
-}
-
-.footer-note {
-  margin: 0;
-  opacity: 0.82;
-  max-width: 380px;
-}
-
-.footer-sources h4 {
-  margin: 0 0 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.82rem;
-  opacity: 0.9;
-}
-
-.footer-sources ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.footer-sources li {
-  margin-bottom: 8px;
-}
-
-.footer-sources a {
-  color: var(--accent-soft);
-  text-decoration: none;
-}
-
-.footer-sources a:hover {
-  text-decoration: underline;
-}
-
-.credits-head {
-  margin-top: 24px !important;
-}
-
-.footer-credits {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 0.8rem;
-  opacity: 0.82;
-}
-
-.footer-credits li {
-  margin-bottom: 6px;
-}
-
-.footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  font-size: 0.84rem;
-  opacity: 0.82;
-}
-
-.footer-bottom .container {
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
-
-/* ---------- Responsive ---------- */
-@media (max-width: 760px) {
+@media (max-width: 680px) {
+  body {
+    font-size: 18px;
+  }
+  .container {
+    padding: 0 20px;
+  }
   .nav-toggle {
     display: flex;
   }
-
   .site-nav {
     position: absolute;
-    top: 64px;
+    top: 72px;
     left: 0;
     right: 0;
     flex-direction: column;
+    align-items: stretch;
     gap: 0;
-    background: var(--green-700);
-    padding: 8px 16px 16px;
-    transform: translateY(-12px);
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: 8px 20px 16px;
+    transform: translateY(-10px);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.18s ease, transform 0.18s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
-
   .site-nav.open {
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
   }
-
   .site-nav a {
-    padding: 12px 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 13px 4px;
+    border-bottom: 1px solid var(--rule-soft);
+    font-size: 0.72rem;
   }
-
-  .footer-inner {
+  .site-nav a::after {
+    display: none;
+  }
+  .annal,
+  .gaz-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .monument-grid {
     grid-template-columns: 1fr;
   }
-
-  .barchart {
-    gap: 12px;
-    height: 200px;
+  .colophon-top {
+    grid-template-columns: 1fr;
   }
-
-  .bar-value {
-    font-size: 0.78rem;
+  .colophon-bottom {
+    flex-direction: column;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   * {
-    scroll-behavior: auto;
+    scroll-behavior: auto !important;
+    animation: none !important;
     transition: none !important;
+  }
+  .fp-step {
+    opacity: 1;
+  }
+  html.reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
   }
 }

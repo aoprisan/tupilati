@@ -15,16 +15,13 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="site-header">
-      <div className="container header-inner">
+    <header className="masthead">
+      <div className="container masthead-inner">
         <a href="#top" className="brand" onClick={() => setOpen(false)}>
-          <span className="brand-mark" aria-hidden="true">
-            T
+          <span className="brand-name">
+            <em>Tupilați</em>
           </span>
-          <span className="brand-text">
-            Comuna Tupilați
-            <small>județul Neamț</small>
-          </span>
+          <span className="brand-sub">Județul Neamț · Moldova</span>
         </a>
 
         <button

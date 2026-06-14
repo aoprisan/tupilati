@@ -2,42 +2,83 @@ import { identitate, geografie, demografie, sate, imagini } from "../data/comuna
 
 export default function Hero() {
   return (
-    <section
-      className="hero"
-      id="top"
-      style={{
-        backgroundImage:
-          `linear-gradient(135deg, rgba(52,78,65,0.86), rgba(58,90,64,0.78)), url(${imagini.hero})`,
-      }}
-    >
-      <div className="hero-overlay" />
-      <div className="container hero-content">
-        <p className="hero-eyebrow">{identitate.regiune} · {identitate.tara}</p>
-        <h1>{identitate.nume}</h1>
-        <p className="hero-tagline">{identitate.tagline}</p>
+    <section className="frontispiece" id="top">
+      <div className="container">
+        <div className="fp-grid">
+          <div className="fp-main">
+            <p className="kicker fp-place fp-step" style={{ animationDelay: "0.05s" }}>
+              {identitate.regiune} · {identitate.tara}
+            </p>
 
-        <ul className="hero-stats" aria-label="Date sintetice">
-          <li>
-            <strong>{demografie.populatieActuala.toLocaleString("ro-RO")}</strong>
-            <span>locuitori (2021)</span>
-          </li>
-          <li>
-            <strong>{sate.length}</strong>
-            <span>sate</span>
-          </li>
-          <li>
-            <strong>{geografie.suprafataKm2} km²</strong>
-            <span>suprafață</span>
-          </li>
-          <li>
-            <strong>{geografie.altitudineM} m</strong>
-            <span>altitudine</span>
-          </li>
-        </ul>
+            <h1 className="fp-title fp-step" style={{ animationDelay: "0.15s" }}>
+              <span className="small">Comuna</span>
+              {identitate.nume.replace("Comuna ", "")}
+            </h1>
 
-        <a className="btn" href="#despre">
-          Descoperă comuna
-        </a>
+            <div className="fp-rule fp-step" style={{ animationDelay: "0.3s" }}>
+              <span aria-hidden="true" />
+            </div>
+
+            <p className="fp-tagline fp-step" style={{ animationDelay: "0.4s" }}>
+              {identitate.tagline}
+            </p>
+
+            <a
+              className="fp-cta fp-step"
+              href="#despre"
+              style={{ animationDelay: "0.5s" }}
+            >
+              Deschide cronica
+              <span className="arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
+          </div>
+
+          <div className="fp-ledger fp-step" style={{ animationDelay: "0.55s" }}>
+            <dl>
+              <div className="row">
+                <dt>Locuitori</dt>
+                <dd>
+                  {demografie.populatieActuala.toLocaleString("ro-RO")}{" "}
+                  <small>2021</small>
+                </dd>
+              </div>
+              <div className="row">
+                <dt>Sate</dt>
+                <dd>{sate.length}</dd>
+              </div>
+              <div className="row">
+                <dt>Suprafață</dt>
+                <dd>
+                  {geografie.suprafataKm2} <small>km²</small>
+                </dd>
+              </div>
+              <div className="row">
+                <dt>Altitudine</dt>
+                <dd>
+                  {geografie.altitudineM} <small>m</small>
+                </dd>
+              </div>
+              <div className="row">
+                <dt>Coordonate</dt>
+                <dd>
+                  <small>{geografie.coordonate.text}</small>
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        <figure
+          className="plate wide fp-plate fp-step"
+          style={{ animationDelay: "0.65s" }}
+        >
+          <img src={imagini.hero} alt="Vedere din comuna Tupilați" />
+          <figcaption className="plate-caption">
+            Terasa râului Moldova — comuna Tupilați, la poarta Hanului Ancuței.
+          </figcaption>
+        </figure>
       </div>
     </section>
   );

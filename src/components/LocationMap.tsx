@@ -10,13 +10,17 @@ export default function LocationMap() {
   return (
     <section id="harta" className="section">
       <div className="container">
-        <h2 className="section-title">Așezare pe hartă</h2>
-        <p className="section-lead">
-          Comuna Tupilați este situată pe terasa râului Moldova, la granița dintre
-          județele Neamț și Iași, la coordonatele {geografie.coordonate.text}.
-        </p>
+        <header className="chapter" data-reveal>
+          <span className="chapter-index" aria-hidden="true" />
+          <h2 className="section-title">Așezare pe hartă</h2>
+          <p className="section-lead">
+            Comuna Tupilați este situată pe terasa râului Moldova, la granița
+            dintre județele Neamț și Iași, la coordonatele{" "}
+            {geografie.coordonate.text}.
+          </p>
+        </header>
 
-        <div className="map-frame">
+        <div className="map-frame" data-reveal>
           <iframe
             title="Harta comunei Tupilați"
             src={src}
@@ -24,7 +28,7 @@ export default function LocationMap() {
             referrerPolicy="no-referrer-when-downgrade"
           />
         </div>
-        <p className="map-link">
+        <p className="map-link" data-reveal>
           <a href={link} target="_blank" rel="noopener noreferrer">
             Deschide harta mai mare (OpenStreetMap) →
           </a>

@@ -10,8 +10,11 @@ import Economy from "./components/Economy";
 import Administration from "./components/Administration";
 import LocationMap from "./components/LocationMap";
 import Footer from "./components/Footer";
+import { useReveal } from "./useReveal";
 
 export default function App() {
+  useReveal();
+
   return (
     <>
       <Header />
